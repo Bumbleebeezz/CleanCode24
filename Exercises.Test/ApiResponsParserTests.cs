@@ -1,28 +1,37 @@
-﻿using Excersices.string_manipulation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Excersices.api_responsparser;
+using Excersices.api_responsparser.abstractions;
 
 namespace Exercises.Test
 {
     public class ApiResponsParserTests
     {
-        [Theory]
-        [InlineData(new string[] { "apple", "banana", "cherry" }, ", ", "apple, banana, cherry")]
-        [InlineData(new string[] { "dog", "cat", "mouse" }, " - ", "dog - cat - mouse")]
-        [InlineData(new string[] { "one", "two", "three" }, "|", "one|two|three")]
-        public void JoinStrings_WithVariousInput_ReturnsConcatenatedString(string[] strings, string seperator, string expected)
+        //    9. API-responsparser
+        //        Uppgift: Implementera en parser som konverterar JSON-svar från ett API till objekt.
+        //        Tester: Skriv xUnit-tester som simulerar API-svar i olika format för att se till att parsningen hanterar dessa korrekt.
+
+        private readonly ApiResponsParser _parser;
+        public ApiResponsParserTests() 
         {
-            // Arrage
+            _parser = new ApiResponsParser();
+        }
 
+        [Fact]
+        public void ConvertJsonToObject_WithValidJson_ReturnsSpecificObject()
+        {        
+            // Arrange
+            string productJson = "{\"id\": 1, \"name\": \"Laptop\", \"price\": 1200.50, \"inStock\": true}";
 
-            //Act
-            string result = StringManipulator.JoinStrings(strings, seperator);
+            // Act
+            var result = _parser.ParseProduct(productJson);
 
-            //Assert
-            Assert.Equal(expected, result);
+            // Assert
+            // Check all values in result
+            Assert.NotNull(result);
+            Assert.Equal(1,result.Id);
+            Assert.Equal("Laptop",result.Name);
+            Assert.Equal(1200.50,result.Price);
+            Assert.True(result.InStock);
+            Assert.IsType<Product>(result);  
         }
     }
 }
