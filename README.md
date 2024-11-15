@@ -1,6 +1,6 @@
-# CleanCode24
+### CleanCode24
 
-### SOLID
+# SOLID
 
 ## SRP (Single Responsibility Principle)
 
